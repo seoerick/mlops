@@ -1,0 +1,10 @@
+paths:
+  input: movie_recommendation/results
+  output: movie_recommendation/models
+
+columns:
+  movie:
+    - 'movieId'
+    - 'rating'
+    - 'genres'
+    - 'title'

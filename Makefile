@@ -1,35 +1,25 @@
 IMAGE := knn
 VERSION:= $(shell grep -m 1 '__version__' setup.py | cut -d '=' -f 2 | tr -d "'" | tr -d '[:space:]')
 
-.PHONY: clean
-clean:
-	find . -name \*.pyc -delete
-	find . -name __pycache__ -delete	
-	find . -name .coverage -delete
-	find . -name sessions.db -delete
-	find . -name coverage.xml -delete
-	find . -name pytestdebug.log -delete
-	find .pytest_cache -delete || true
-
-	rm -rf dist/
-
-.PHONY: test_unit
-test_unit:
-	python3 -bb -m pytest tests
-
-.PHONY: lint
 lint:
-	flake8 .
+	black movie_recommendation
+	autoflake -r -i movie_recommendation
 
-.PHONY: mypy
-mypy:
-	mypy --ignore-missing-imports --strict-optional --warn-no-return .
+requirements:
+	python -m pip install -r requirements_test.txt
+	python -m pip install -r requirements.txt
 
-.PHONY: test
-test: test_unit lint mypy
+unit_test:
+	pytest --cov=movie_recommendation --cov-report term-missing --ignore=setup.py -vv
 
-.PHONY: build
-build:
+cleaning_process:
+	sh download_movie_lens.sh
+	time python3 data_process/cleaning.py data_process/cfg/cleaning.yaml
+
+training_process:
+	time python3 data_process/training.py data_process/cfg/training.yaml
+
+build_endpoint:
 	docker rmi -f ${IMAGE}:latest || true
 	docker rmi -f ${IMAGE}:${VERSION} || true
 	docker rm ${IMAGE} || true
@@ -39,23 +29,12 @@ build:
 	docker run --name ${IMAGE} --publish 5005:5005 ${IMAGE}
 
 
-.PHONY: push-image
-push-image:
-	docker push ${IMAGE}:${VERSION}
-	docker push ${IMAGE}:latest
+build:
+	make cleaning_process
+	make training_process
+	make build_endpoint
 
-.PHONY: build-push-image
-build-push-image: build push-image
 
-.PHONY: requirements
-requirements:
-	python -m pip install -r requirements_test.txt
-	python -m pip install -r requirements.txt
-
-test:
-	pytest --cov=quality_service --cov-report term-missing --ignore=setup.py
-
-.PHONY: coverage
 coverage:
 	coverage run --source quality_service -m pytest --debug 
 	coverage report -m
