@@ -1,11 +1,8 @@
-import os
 from movie_recommendation.script import util
 from movie_recommendation.script import catalog, movie
-from flask import Flask, request, make_response
+from flask import request, make_response
+from movie_recommendation import application
 
-
-application = Flask(__name__)
-application.config["SECRET_KEY"] = os.urandom(32)
 
 movielens = movie.MovieLens()
 movie_catalog = catalog.MovieCatalog()

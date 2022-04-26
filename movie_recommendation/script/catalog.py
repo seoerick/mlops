@@ -15,8 +15,8 @@ class MovieCatalog(object):
             catalog = pickle.load(handle)
         return catalog
 
-    def get_title(self, movie_id: int) -> str:
-        if (isinstance(movie_id, int)) and (movie_id in self.catalog["title"]):
+    def get_title(self, movie_id: str) -> str:
+        if movie_id in self.catalog["title"]:
             return self.catalog["title"][movie_id]
         else:
             return "Not Found"
@@ -24,8 +24,8 @@ class MovieCatalog(object):
     def list_title(self) -> Dict[AnyStr, List[AnyStr]]:
         return self.catalog["title"]
 
-    def get_genre(self, movie_id: int) -> Dict[AnyStr, List[AnyStr]]:
-        if (isinstance(movie_id, int)) and (movie_id in self.catalog["genre"]):
+    def get_genre(self, movie_id: str) -> Dict[AnyStr, List[AnyStr]]:
+        if movie_id in self.catalog["genre"]:
             return self.catalog["genre"][movie_id]
         else:
             return "Not Found"
