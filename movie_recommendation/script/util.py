@@ -17,6 +17,18 @@ def euclideanDistance(instance1: List[float], instance2: List[float], length: in
     return math.sqrt(distance)
 
 
+def cosine_similarity(v1, v2, length):
+    "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
+    sumxx, sumxy, sumyy = 0, 0, 0
+    for i in range(length):
+        x = v1[i]
+        y = v2[i]
+        sumxx += x * x
+        sumyy += y * y
+        sumxy += x * y
+    return sumxy / math.sqrt(sumxx * sumyy)
+
+
 def get_neighbors(trainingSet: List[List[float]], testInstance: List[float], k: int):
     """Calculate Euclidean Distance and select K entries.
     Args:
@@ -28,6 +40,7 @@ def get_neighbors(trainingSet: List[List[float]], testInstance: List[float], k: 
     length = len(testInstance)
     for x in range(len(trainingSet)):
         dist = euclideanDistance(testInstance, trainingSet[x], length)
+        # dist = cosine_similarity(testInstance, trainingSet[x], length)
         distances.append((trainingSet[x], dist))
     distances.sort(key=operator.itemgetter(1))
     neighbors = []
