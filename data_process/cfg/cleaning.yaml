@@ -1,0 +1,27 @@
+paths:
+  input: data_process/data
+  output: movie_recommendation/results
+
+columns:
+  movie:
+    - 'movieId'
+    - 'title'
+    - 'genres'
+  tag:
+    - 'movieId'
+    - 'userId'
+    - 'tag'
+  rating:
+    - 'movieId'
+    - 'userId'
+    - 'rating'
+    - 'timestamp'
+
+  final_columns:
+    - 'movieId'
+    - 'userId'
+    - 'rating'
+    - 'timestamp_rating'
+    - 'tag'
+    - 'title'
+    - 'genres'
