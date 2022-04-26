@@ -13,6 +13,9 @@ unit_test:
 	pytest --cov=movie_recommendation --cov-report term-missing --ignore=setup.py -vv
 
 cleaning_process:
+	mkdir -p data_process/data
+	mkdir -p movie_recommendation/models
+	mkdir -p movie_recommendation/results
 	sh download_movie_lens.sh
 	time python3 data_process/cleaning.py data_process/cfg/cleaning.yaml
 

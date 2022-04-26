@@ -1,0 +1,28 @@
+kind: pipeline
+type: kubernetes
+name: Airflow Data Management
+trigger:
+  event:
+    - push
+  branch:
+    - qa
+    - prod
+    - dev
+
+steps:
+  - name: fetch
+    image: alpine/git
+    commands:
+      - git fetch --all
+
+  - name: deploy
+    image: amazon/aws-cli:2.2.20
+    commands:
+      - make build
+    when:
+      event:
+        - push
+      branch:
+        - qa
+        - prod
+        - dev
