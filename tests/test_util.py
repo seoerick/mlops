@@ -10,6 +10,15 @@ def test_euclidean_distance():
     assert return_value == expected
 
 
+def test_cosine_similarity():
+    instance1 = [0.1, 0.2, 0.8]
+    instance2 = [0.1, 0.8, 0.2]
+
+    return_value = util.cosine_similarity(instance1, instance2, len(instance2))
+    expected = 0.47826086956521735
+    assert return_value == expected
+
+
 def test_get_neighbors():
     trainingSet = [[0.1, 0.2, 0.8, 1], [0.6, 0.9, 0.2, 2]]
     testInstance = [0.1, 0.3, 0.8]

@@ -1,14 +1,11 @@
 import yaml
 from typing import List
 import pandas as pd
-import math
-import operator
-from utils.yaml_loader import YamlLoader
 
 
 def get_config(path: str) -> dict:
     with open(path) as f:
-        cfg = yaml.load(f, Loader=YamlLoader)
+        cfg = yaml.load(f, Loader=yaml.FullLoader)
     return cfg
 
 

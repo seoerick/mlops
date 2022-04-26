@@ -1,19 +1,16 @@
 from movie_recommendation.script import util
-from movie_recommendation.script import catalog, movie
 from flask import request, make_response
-from movie_recommendation import application
-
-
-movielens = movie.MovieLens()
-movie_catalog = catalog.MovieCatalog()
+from movie_recommendation import application, movielens, movie_catalog
 
 
 @application.route("/similar_movie", methods=["GET"])
 def similar_movie():
-    movieId = int(request.args.get("movieId"))
-    test_instance = movielens.get_instance(movieId)
+    movie_id = int(request.args.get("movieId"))
+    test_instance = movielens.get_instance(movie_id)
     if not test_instance:
-        return make_response("Invalid movieId, see more in endpoint /list_movie", 400)
+        return make_response(
+            "Invalid movieId, see more in endpoint /list_movie", 400
+        )
     k = 10
     neighbors = util.get_neighbors(movielens.get_df_list(), test_instance, k)
 
@@ -29,11 +26,9 @@ def similar_movie():
         )
     return similar_movies
 
-
 @application.route("/list_movie", methods=["GET"])
 def list_movies():
     return {"movies": [movie_catalog.list_title()]}
-
 
 @application.route("/", methods=["GET"])
 def hello_world():

@@ -3,7 +3,6 @@ from utils import util
 
 
 if __name__ == "__main__":
-    print(sys.argv[1])
     yaml_cfg = util.get_config(sys.argv[1])
 
     INPUT_PATH = yaml_cfg["paths"]["input"]
